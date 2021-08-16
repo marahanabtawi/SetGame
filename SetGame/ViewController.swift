@@ -10,7 +10,8 @@ import UIKit
 class ViewController: UIViewController {
   
   lazy var set = Set(maxNumberOfBoardCards: cardButtons.count)
-  var colors = [#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1), #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)]
+  
+  var colors = [#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1), #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)] // FIXME: must be constant
   let symbols = ["▲", "■", "●"]
   let numberOfSymbols = [1, 2, 3]
   let fillShade: [NSAttributedString.Key: Any]  = [.strokeWidth: -1]
@@ -23,6 +24,7 @@ class ViewController: UIViewController {
   
   @IBAction func touchDeal3MoreCards(_ sender: UIButton) {
     set.drawThreeMoreCards()
+    //FIXME: this shouldnt be called everytime 3 cards are dealed
     updateView()
   }
   
@@ -49,6 +51,7 @@ class ViewController: UIViewController {
   
   func drawSymbolsOnCard(_ numberOfSymbols: Int, shape: String, button: UIButton, color: UIColor,shadingStyle: Int) {
     
+    // FIXME: you will always overwrite this in the following switch statement no need for it
     var stringAttributes: [NSAttributedString.Key: Any] = fillShade
     var symbol: String
     
@@ -65,6 +68,7 @@ class ViewController: UIViewController {
       print("default")
     }
     
+    // FIXME: you could use [].init(repeating: shape, count: number)
     switch numberOfSymbols {
     case 1:
       symbol = shape
@@ -90,7 +94,7 @@ class ViewController: UIViewController {
       var color: UIColor
       var numberOfSymbols: Int
       var shadingStyle: Int
-      
+      // FIXME: too much code duplication, if you've assigned raw value for the enum, you could use it as an index 0-2
       switch cardSymbol {
       case .triangle:
         symbol = symbols[0]
@@ -153,6 +157,7 @@ class ViewController: UIViewController {
     for button in cardButtons {
       button.backgroundColor =  #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 0)
       button.setAttributedTitle(NSMutableAttributedString.init(string: "", attributes: [:]), for: .normal)
+      //FIXME: why disabling the buttons
       button.isEnabled = false
       deselectCard(button: button)
     }

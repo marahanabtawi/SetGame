@@ -1,0 +1,5 @@
+When running the app:-
+
+-When selected cards are evaluated as wrong set, boarders should indicate by red color for example
+-When selected cards are evaluated as true set, before dealing 3 more cards, user can still select more cards and score is updating ( app still evaluating )
+-When dealing cards from the deck, cards are shuffled every time because updateView is called every time 3 more cards are added and affects all cards

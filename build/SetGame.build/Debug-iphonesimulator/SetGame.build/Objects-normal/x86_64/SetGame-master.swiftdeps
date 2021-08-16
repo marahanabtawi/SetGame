@@ -1,0 +1,9 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "0ae4aa9169f4631bdedd6cdee55b7ba7"
+build_time: [1629122259, 613565000]
+inputs:
+  "/Users/aliirshaid/Desktop/SetGame/SetGame/Set.swift": [1629121375, 423234923]
+  "/Users/aliirshaid/Desktop/SetGame/SetGame/ViewController.swift": [1629122186, 405840173]
+  "/Users/aliirshaid/Desktop/SetGame/SetGame/AppDelegate.swift": [1629119420, 193242958]
+  "/Users/aliirshaid/Desktop/SetGame/SetGame/SceneDelegate.swift": [1629119420, 196710999]
+  "/Users/aliirshaid/Desktop/SetGame/SetGame/Card.swift": [1629119664, 208793142]
