@@ -7,41 +7,43 @@
 
 import Foundation
 
+// FIXME: Seperate protocol "Hashable" implementation by using extension for better readability
 struct Card: Hashable{
   
   static func == (lhs: Card, rhs: Card) -> Bool {
-        return lhs.cardID == rhs.cardID
-    }
-  
+    return lhs.cardID == rhs.cardID
+  }
+  // FIXME: cardID should be constant
   var cardID: Int
   let shape: Shape
   let color: Color
   let shade: Shade
   let number: Number
-
+  
 }
 
- enum Number{
-    case one 
-    case two
-    case three
-  }
-  
-  enum Color{
-    case red
-    case blue
-    case green
-  }
-  
-  enum Shade{
-    case fill
-    case open
-    case striped
-  }
-  enum Shape{
-    case circle
-    case triangle
-    case square
-  }
-  
- 
+
+enum Number{
+  case one
+  case two
+  case three
+}
+
+enum Color{
+  case red
+  case blue
+  case green
+}
+
+enum Shade{
+  case fill
+  case open
+  case striped
+}
+enum Shape{
+  case circle
+  case triangle
+  case square
+}
+
+
