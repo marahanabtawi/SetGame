@@ -63,22 +63,33 @@ class Set {
     }
     if selectedCards.count == 3 {
       validSet = checkValidSet(firstCard: selectedCards[0], secondCard: selectedCards[1], thirdCard: selectedCards[2])
-      if validSet{
-        for card in selectedCards{
-          boardCards.removeAll(where: { $0 == card })
-        }
-        matchedCards += selectedCards
-        score += 3
-      } else {
-        score -= 3
+      if matchedCards != selectedCards{
+        if validSet {
+          matchedCards += selectedCards
+          score += 3
+        } else {
+          score -= 3
+       }
       }
     }
   }
   
   func drawThreeMoreCards(){
-    if boardCards.count < maxNumberOfBoardCards && cardDeck.count >= 3 {
-      for i in 0...2 {
+    if boardCards.count < maxNumberOfBoardCards || cardDeck.count >= 3 {
+      print(validSet)
+      if validSet{
+        for index in 0...2{
+          print("hi")
+          if let removedCard = boardCards.firstIndex(of: selectedCards[index]){
+            print(removedCard)
+            print(selectedCards[index])
+            boardCards[removedCard] = cardDeck.remove(at: index)
+          }
+        }
+      } else {
+         for i in 0...2 {
           boardCards.append(cardDeck.remove(at: i))
+        }
       }
     }
   }
@@ -104,12 +115,12 @@ class Set {
     selectedCards = []
     matchedCards = []
     boardCards = []
+    validSet = false
     
     for i in 0...11 {
-      if cardDeck.count >= 3{
-        boardCards.append(cardDeck.remove(at: i))
-      }
+      boardCards.append(cardDeck.remove(at: i))
     }
+    
   }
   
 }

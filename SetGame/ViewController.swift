@@ -152,7 +152,9 @@ class ViewController: UIViewController {
       button.isEnabled = false
       deselectCard(button: button)
     }
+    set.validSet = false
     set.selectedCards = []
+    set.matchedCards = []
     displayCards()
     
     if set.boardCards.count == cardButtons.count || set.cardDeck.count < 3 {
@@ -171,7 +173,7 @@ class ViewController: UIViewController {
       } else {
         deselectCard(button: cardButtons[index])
       }
-      if set.matchedCards.contains(card){
+      if set.matchedCards.contains(card) && set.selectedCards.contains(card) {
         matchedCard(button: cardButtons[index])
       }else if set.selectedCards.count == 3 && set.selectedCards.contains(card){
         dismatchedCard(button: cardButtons[index])
