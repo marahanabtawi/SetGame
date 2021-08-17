@@ -7,11 +7,7 @@
 
 import Foundation
 
-struct Card: Hashable{
-  
-  static func == (lhs: Card, rhs: Card) -> Bool {
-        return lhs.cardID == rhs.cardID
-    }
+struct Card{
   
   var cardID: Int
   let shape: Shape
@@ -19,6 +15,12 @@ struct Card: Hashable{
   let shade: Shade
   let number: Number
 
+}
+
+extension Card: Hashable{
+  static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.cardID == rhs.cardID
+    }
 }
 
  enum Number{

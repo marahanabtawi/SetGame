@@ -28,84 +28,78 @@ class Set {
   var validSet = false
   
   init(maxNumberOfBoardCards: Int) {
+    self.maxNumberOfBoardCards = maxNumberOfBoardCards
+    initDeck()
+  }
+  
+  func initDeck(){
+    var index = 0
     for color in colors {
       for shade in shades {
         for number in numbers {
           for shape in shapes {
-            let card = Card(cardID: 0, shape: shape, color: color, shade: shade, number: number)
-            cardDeck += [card]
+            let card = Card(cardID: index, shape: shape, color: color, shade: shade, number: number)
+            cardDeck.append(card)
+            index += 1
           }
         }
       }
     }
-    self.maxNumberOfBoardCards = maxNumberOfBoardCards
-
-    cardDeck = shuffleCardDeck()
+    cardDeck.shuffle()
     
-    for index in cardDeck.indices {
-      cardDeck[index].cardID = index
-    }
-   
     for i in 0...11 {
-      boardCards += [cardDeck[i]]
+      boardCards.append(cardDeck.remove(at: i))
     }
     
-    cardDeck.removeSubrange(ClosedRange(uncheckedBounds: (lower: 0, upper: 11)))
-  }
-  
-  func shuffleCardDeck() -> [Card] {
-    var shuffledCardDeck = [Card]()
-    for _ in cardDeck.indices {
-      let randomIndex = Int(arc4random_uniform(UInt32(cardDeck.count)))
-      shuffledCardDeck.append(cardDeck[randomIndex])
-      cardDeck.remove(at: randomIndex)
-    }
-    return shuffledCardDeck
   }
   
   func chooseCard(_ card: Card) {
     if selectedCards.count < 3, !selectedCards.contains(card) {
-      selectedCards += [card]
+      selectedCards.append(card)
     } else {
-      if let selectedCardID = selectedCards.firstIndex(of: card), selectedCards.count <= 3 {
+      if let selectedCardID = selectedCards.firstIndex(of: card){
         selectedCards.remove(at: selectedCardID)
       }
     }
     if selectedCards.count == 3 {
       validSet = checkValidSet(firstCard: selectedCards[0], secondCard: selectedCards[1], thirdCard: selectedCards[2])
-      if validSet{
-        matchedCards += selectedCards
-        for card in selectedCards{
-          boardCards.removeAll(where: { $0 == card })
+      if matchedCards != selectedCards{
+        if validSet {
+          matchedCards += selectedCards
+          score += 3
+        } else {
+          score -= 3
         }
-        score += 3
-      } else {
-        score -= 3
-        selectedCards = [Card]()
       }
-      
     }
   }
   
-  func drawThreeMoreCards() {
-    if boardCards.count < maxNumberOfBoardCards && cardDeck.count >= 3 {
-      for i in 0...2 {
-        boardCards += [cardDeck[i]]
+  func drawThreeMoreCards(){
+    if boardCards.count < maxNumberOfBoardCards || cardDeck.count >= 3 {
+      if validSet{
+        for index in 0...2{
+          if let removedCard = boardCards.firstIndex(of: selectedCards[index]){
+            boardCards[removedCard] = cardDeck.remove(at: index)
+          }
+        }
+      } else {
+        for i in 0...2 {
+          boardCards.append(cardDeck.remove(at: i))
+        }
       }
-      cardDeck.removeSubrange(ClosedRange(uncheckedBounds: (lower: 0, upper: 2)))
     }
   }
   
   func checkValidSet(firstCard: Card, secondCard: Card, thirdCard: Card) -> Bool {
     let setColor = ((firstCard.color == secondCard.color) && (secondCard.color == thirdCard.color))  ||
       ((firstCard.color != secondCard.color) && (secondCard.color != thirdCard.color) && (firstCard.color != thirdCard.color))
-  
+    
     let setShape = (firstCard.shape == secondCard.shape) && (secondCard.shape == thirdCard.shape) ||
       ((firstCard.shape != secondCard.shape) && (secondCard.shape != thirdCard.shape) && (firstCard.shape != thirdCard.shape))
-   
+    
     let setShade = (firstCard.shade == secondCard.shade) && (secondCard.shade == thirdCard.shade) ||
       ((firstCard.shade != secondCard.shade) && (secondCard.shade != thirdCard.shade) && (firstCard.shade != thirdCard.shade))
-
+    
     let setNumber = (firstCard.number == secondCard.number) && (secondCard.number == thirdCard.number) ||
       ((firstCard.number != secondCard.number) && (secondCard.number != thirdCard.number) && (firstCard.number != thirdCard.number))
     
@@ -114,16 +108,15 @@ class Set {
   
   func reset() {
     score = 0
-    selectedCards = [Card]()
-    matchedCards = [Card]()
-    boardCards = [Card]()
+    selectedCards = []
+    matchedCards = []
+    boardCards = []
+    validSet = false
     
-     for i in 0...11 {
-      if cardDeck.count >= 3{
-       boardCards += [cardDeck[i]]
-      }
-     }
-    cardDeck.removeSubrange(ClosedRange(uncheckedBounds: (lower: 0, upper: 11)))
+    for i in 0...11 {
+      boardCards.append(cardDeck.remove(at: i))
+    }
+    
   }
   
 }

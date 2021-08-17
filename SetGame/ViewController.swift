@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
   
   lazy var set = Set(maxNumberOfBoardCards: cardButtons.count)
-  var colors = [#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1), #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)]
+  let colors = [#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1), #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)]
   let symbols = ["▲", "■", "●"]
   let numberOfSymbols = [1, 2, 3]
   let fillShade: [NSAttributedString.Key: Any]  = [.strokeWidth: -1]
@@ -20,7 +20,6 @@ class ViewController: UIViewController {
   @IBOutlet weak var deal3CardsButton: UIButton!
   @IBOutlet weak var scoreLabel: UILabel!
   var buttonsOfCards: [Int: Card] = [:]
-  
   @IBAction func touchDeal3MoreCards(_ sender: UIButton) {
     set.drawThreeMoreCards()
     updateView()
@@ -49,7 +48,7 @@ class ViewController: UIViewController {
   
   func drawSymbolsOnCard(_ numberOfSymbols: Int, shape: String, button: UIButton, color: UIColor,shadingStyle: Int) {
     
-    var stringAttributes: [NSAttributedString.Key: Any] = fillShade
+    var stringAttributes = fillShade
     var symbol: String
     
     switch shadingStyle {
@@ -65,16 +64,7 @@ class ViewController: UIViewController {
       print("default")
     }
     
-    switch numberOfSymbols {
-    case 1:
-      symbol = shape
-    case 2:
-      symbol = shape + shape
-    case 3:
-      symbol = shape + shape + shape
-    default:
-      symbol = shape
-    }
+    symbol = .init(repeating: shape, count: numberOfSymbols)
     
     button.setAttributedTitle(NSMutableAttributedString.init(string: symbol, attributes: stringAttributes), for: .normal)
   }
@@ -140,9 +130,14 @@ class ViewController: UIViewController {
     button.layer.borderColor = UIColor.blue.cgColor
   }
   
-  func matchCard(button: UIButton) {
+  func matchedCard(button: UIButton) {
     button.layer.borderWidth = 3.0
     button.layer.borderColor = UIColor.green.cgColor
+  }
+  
+  func dismatchedCard(button: UIButton) {
+    button.layer.borderWidth = 3.0
+    button.layer.borderColor = UIColor.red.cgColor
   }
   
   func deselectCard(button: UIButton) {
@@ -156,8 +151,9 @@ class ViewController: UIViewController {
       button.isEnabled = false
       deselectCard(button: button)
     }
-    
-    set.selectedCards = [Card]()
+    set.validSet = false
+    set.selectedCards = []
+    set.matchedCards = []
     displayCards()
     
     if set.boardCards.count == cardButtons.count || set.cardDeck.count < 3 {
@@ -176,8 +172,10 @@ class ViewController: UIViewController {
       } else {
         deselectCard(button: cardButtons[index])
       }
-      if set.matchedCards.contains(card){
-        matchCard(button: cardButtons[index])
+      if set.matchedCards.contains(card) && set.selectedCards.contains(card) {
+        matchedCard(button: cardButtons[index])
+      }else if set.selectedCards.count == 3 && set.selectedCards.contains(card){
+        dismatchedCard(button: cardButtons[index])
       }
     }
   }
