@@ -69,25 +69,21 @@ class Set {
           score += 3
         } else {
           score -= 3
-       }
+        }
       }
     }
   }
   
   func drawThreeMoreCards(){
     if boardCards.count < maxNumberOfBoardCards || cardDeck.count >= 3 {
-      print(validSet)
       if validSet{
         for index in 0...2{
-          print("hi")
           if let removedCard = boardCards.firstIndex(of: selectedCards[index]){
-            print(removedCard)
-            print(selectedCards[index])
             boardCards[removedCard] = cardDeck.remove(at: index)
           }
         }
       } else {
-         for i in 0...2 {
+        for i in 0...2 {
           boardCards.append(cardDeck.remove(at: i))
         }
       }

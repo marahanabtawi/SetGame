@@ -20,7 +20,6 @@ class ViewController: UIViewController {
   @IBOutlet weak var deal3CardsButton: UIButton!
   @IBOutlet weak var scoreLabel: UILabel!
   var buttonsOfCards: [Int: Card] = [:]
-  
   @IBAction func touchDeal3MoreCards(_ sender: UIButton) {
     set.drawThreeMoreCards()
     updateView()
