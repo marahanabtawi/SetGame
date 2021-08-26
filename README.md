@@ -1,1 +1,1 @@
-echo "# SetGame"
+"SetGame"
